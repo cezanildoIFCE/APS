@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Acesso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>SISTEMA DE CONTROLE DE ACESSO DE VEÍCULOS IFCE Maracanaú</h1>
+    <h2>Escolha uma opção</h2>
+
+    <!-- Botão de Cadastrar -->
+    <div class="form-group">
+        <form action="cadastrar.html" method="POST">
+            <input type="submit" value="Cadastrar Usuário">
+        </form>
+    </div>
+
+    <!-- Botão de Remover -->
+    <div class="form-group">
+        <form action="remover.html" method="POST">
+            <input type="submit" value="Remover Usuário">
+        </form>
+    </div>
+
+    <!-- Botão de Sair -->
+    <div class="form-group">
+        <form action="tela_login.html" method="POST">
+            <input type="submit" value="Sair">
+        </form>
+    </div>
+</body>
+</html>
