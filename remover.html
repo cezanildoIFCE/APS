@@ -13,6 +13,12 @@
             height: 100vh;
             margin: 0;
             background-color: #f4f4f9;
+            position: relative;
+            background-image: url('img_brasao.png');
+            background-repeat: repeat;
+            background-position: center;
+            background-size: 33% 33%;
+            opacity: 1;
         }
         h1 {
             text-align: center;
@@ -25,6 +31,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         .form-group {
             margin-bottom: 15px;
@@ -49,20 +56,37 @@
         }
         .button-back {
             margin-top: 10px;
-            text-align: center;
+        }
+        .button-back input {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .button-back input:hover {
+            background-color: #0056b3;
+        }
+        .red {
+            color: red;
+        }
+        .green {
+            color: green;
         }
     </style>
 </head>
 <body>
     <div class="form-container">
-        <h1>SISTEMA DE CONTROLE DE ACESSO DE VEÍCULOS IFCE Maracanaú</h1>
-        <p>Digite a matrícula do usuário a ser removido</p>
+        <h1>SISTEMA DE CONTROLE DE ACESSO DE VEÍCULOS <span class="red">I</span><span class="green">FCE</span> Maracanaú</h1>
+        <h2>Digite a matrícula do usuário a ser removido</h2>
 
         <!-- Formulário de Remoção -->
         <form action="remover.php" method="POST">
             <div class="form-group">
                 <label for="matricula">MATRÍCULA:</label>
-                <input type="text" id="matricula" name="matricula" required minlength="14" maxlength="14" pattern="\d{14}" title="A matrícula deve conter exatamente 14 dígitos.">
+                <input type="text" id="matricula" name="matricula" required minlength="14" maxlength="14" pattern="\d{14}" title="A matrícula deve conter exatamente 14 numeros.">
             </div>
             <div class="form-group">
                 <input type="submit" value="Remover">

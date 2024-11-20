@@ -1,0 +1,11 @@
+{
+    "pylint.enabled": true,
+    "pylint.interpreter": [
+        "C:/Python39/python.exe"  // Caminho do seu interpretador Python
+    ],
+    "editor.defaultFormatter": null,
+    "sonarlint.connectedMode.project": {
+        // Adicione seu projeto conectado ao SonarQube aqui, se necessário
+    },
+    "sonarlint.pathToNodeExecutable": "C:\\Program Files\\NodeJS\\20-lts\\bin\\node.exe"  // Caminho para o executável do Node.js no Windows
+}

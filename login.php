@@ -1,3 +1,4 @@
+//login.php
 <?php
 session_start();
 require 'db_connection.php';
@@ -22,11 +23,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: menu.html");
             exit();
         } else {
-            echo "Senha incorreta.";
+            $message = "Senha incorreta.";
         }
     } else {
-        echo "Matrícula não encontrada.";
+        $message = "Matrícula não encontrada.";
     }
     close($conn);
+
+    if (isset($message)) {
+        echo "<script>
+                alert('$message');
+                setTimeout(function() {
+                    window.location.href = 'tela_login.html';
+                }, 50);
+              </script>";
+    }
 }
 ?>

@@ -1,3 +1,4 @@
+//db_conection
 <?php
 
 function connect() {
