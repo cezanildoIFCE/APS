@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Acesso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            position: relative;
+            background-image: url('img_brasao.png');
+            background-repeat: repeat;
+            background-position: center;
+            background-size: 33% 33%;
+            opacity: 1;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group input[type="submit"] {
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-group .btn-add {
+            background-color: #28a745;
+        }
+        .form-group .btn-add:hover {
+            background-color: #218838;
+        }
+        .form-group .btn-remove {
+            background-color: #dc3545;
+        }
+        .form-group .btn-remove:hover {
+            background-color: #c82333;
+        }
+        .button-back {
+            margin-top: 10px;
+        }
+        .button-back input {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .button-back input:hover {
+            background-color: #0056b3;
+        }
+        .red {
+            color: red;
+        }
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>SISTEMA DE CONTROLE DE ACESSO DE VEÍCULOS <span class="red">I</span><span class="green">FCE</span> Maracanaú</h1>
+        <h2>Digite a matrícula do usuário ou a placa do veículo</h2>
+        <form id="mainForm" method="POST" action="acesso_manual_veiculo.php">
+            <div class="form-group">
+                <label for="matricula">MATRÍCULA:</label>
+                <input type="text" id="matricula" name="matricula" minlength="14" maxlength="14" pattern="\d{14}" title="A matrícula deve conter exatamente 14 números.">
+            </div>
+            <div class="form-group">
+                <label for="placa">PLACA DO VEÍCULO:</label>
+                <input type="text" id="placa" name="placa" minlength="7" maxlength="7" pattern="[A-Za-z0-9]{7}" title="A placa deve conter exatamente 7 letras ou números.">
+            </div>
+            <input type="hidden" id="tipo_acesso" name="tipo_acesso" value="">
+            <div class="form-group">
+                <input type="submit" value="Entrada de Veículo" class="btn-add" onclick="document.getElementById('tipo_acesso').value = 'entrada'">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Saída de Veículo" class="btn-remove" onclick="document.getElementById('tipo_acesso').value = 'saida'">
+            </div>
+        </form>
+        <div class="button-back">
+            <form action="tela_login.html" method="GET">
+                <input type="submit" value="Voltar">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

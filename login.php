@@ -1,7 +1,8 @@
-//login.php
 <?php
+namespace controle_acesso;
+
 session_start();
-require 'db_connection.php';
+require_once 'db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $matricula = $_POST['matricula'];
@@ -20,7 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($senha, $user['senha'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['admin'] = $user['administrador'];
-            header("Location: menu.html");
+            
+            if ($user['administrador']) {
+                header("Location: menu.html");
+            } else {
+                header("Location: menu_usuario.html");
+            }
             exit();
         } else {
             $message = "Senha incorreta.";
@@ -28,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $message = "Matrícula não encontrada.";
     }
+    
     close($conn);
 
     if (isset($message)) {

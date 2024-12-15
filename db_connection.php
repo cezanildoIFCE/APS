@@ -1,13 +1,13 @@
-//db_conection
 <?php
+namespace controle_acesso;
 
 function connect() {
     $host = 'localhost';
-    $user = 'root'; 
-    $pass = ''; 
+    $user = 'root';
+    $pass = '';
     $db = 'controle_acesso';
 
-    $conn = new mysqli($host, $user, $pass, $db);
+    $conn = new \mysqli($host, $user, $pass, $db);
 
     if ($conn->connect_error) {
         die("Falha na conexão: " . $conn->connect_error);
@@ -18,4 +18,4 @@ function connect() {
 function close($conn) {
     $conn->close();
 }
-?>
+
