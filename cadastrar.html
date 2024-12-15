@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Acesso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            position: relative;
+            background-image: url('img_brasao.png');
+            background-repeat: repeat;
+            background-position: center;
+            background-size: 33% 33%;
+            opacity: 1;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input[type="text"], .form-group input[type="password"], .form-group select {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+        .form-group input[type="submit"] {
+            padding: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .button-back {
+            margin-top: 10px;
+        }
+        .button-back input {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .button-back input:hover {
+            background-color: #0056b3;
+        }
+        .red {
+            color: red;
+        }
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>SISTEMA DE CONTROLE DE ACESSO DE VEÍCULOS <span class="red">I</span><span class="green">FCE</span> Maracanaú</h1>
+        <h2>Digite os dados do usuário a ser cadastrado</h2>
+
+        <!-- Formulário de Cadastro -->
+        <form action="cadastrar.php" method="POST">
+            <div class="form-group">
+                <label for="nome">NOME:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="matricula">MATRÍCULA:</label>
+                <input type="text" id="matricula" name="matricula" required minlength="14" maxlength="14" pattern="\d{14}" title="A matrícula deve conter exatamente 14 dígitos.">
+            </div>
+            <div class="form-group">
+                <label for="senha">SENHA:</label>
+                <input type="password" id="senha" name="senha" required minlength="8" maxlength="14">
+            </div>
+            <div class="form-group">
+                <label for="placa">PLACA:</label>
+                <input type="text" id="placa" name="placa" required minlength="7" maxlength="7" pattern="[A-Za-z0-9]{7}" title="A placa deve conter exatamente 7 caracteres, incluindo letras e números.">
+            </div>
+            <div class="form-group">
+                <label for="numero_cartao">NÚMERO DO CARTÃO:</label>
+                <input type="text" id="numero_cartao" name="numero_cartao" required minlength="10" maxlength="10" pattern="[A-Za-z0-9]{10}" title="O número do cartão deve conter exatamente 10 caracteres, incluindo letras e números.">
+            </div>
+            <div class="form-group">
+                <label for="tipo_usuario">TIPO DE USUÁRIO:</label>
+                <select id="tipo_usuario" name="tipo_usuario" required>
+                    <option value="" disabled selected>Selecione</option>
+                    <option value="servidor">Servidor</option>
+                    <option value="aluno">Aluno</option>
+                    <option value="visitante_cadastrado">Visitante Cadastrado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="administrador">ADMINISTRADOR:</label>
+                <select id="administrador" name="administrador" required>
+                    <option value="0">Não</option>
+                    <option value="1">Sim</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Cadastrar">
+            </div>
+        </form>
+        <div class="button-back">
+            <form action="menu.html" method="GET">
+                <input type="submit" value="Voltar">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
