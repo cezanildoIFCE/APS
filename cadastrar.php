@@ -1,18 +1,18 @@
-//cadastrar.php
 <?php
+namespace controle_acesso;
+
 session_start();
-require 'db_connection.php';
+require_once 'db_connection.php';
 
 if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     echo "<script>
             alert('Acesso negado.');
             setTimeout(function() {
                 window.location.href = 'menu.html';
-            }, 50); 
+            }, 50);
           </script>";
     exit();
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST['nome'];
     $matricula = $_POST['matricula'];
@@ -21,26 +21,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $numero_cartao = $_POST['numero_cartao'];
     $tipo_usuario = $_POST['tipo_usuario'];
     $administrador = $_POST['administrador'];
-
-    $conn = connect();
-
-   
-    $stmt = $conn->prepare("INSERT INTO usuarios (nome, matricula, senha, placa, tipo_usuario, numero_cartao, administrador) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssi", $nome, $matricula, $senha, $placa, $tipo_usuario, $numero_cartao, $administrador);
-
+    $conn = \controle_acesso\connect();
+    $conn->begin_transaction();
     try {
-        
+        $stmt = $conn->prepare("INSERT INTO usuarios (nome, matricula, senha, tipo_usuario, numero_cartao, administrador) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssi", $nome, $matricula, $senha, $tipo_usuario, $numero_cartao, $administrador);
+
         if ($stmt->execute()) {
-            echo "<script>
-                    alert('Usuário cadastrado com sucesso!');
-                    setTimeout(function() {
-                        window.location.href = 'cadastrar.html';
-                    }, 50); 
-                  </script>";
-            exit();
+            $usuario_id = $stmt->insert_id;
+            $stmt = $conn->prepare("INSERT INTO placas (placa, usuario_id) VALUES (?, ?)");
+            $stmt->bind_param("si", $placa, $usuario_id);
+            if ($stmt->execute()) {
+                $conn->commit();
+                echo "<script>
+                        alert('Usuário cadastrado com sucesso!');
+                        setTimeout(function() {
+                            window.location.href = 'cadastrar.html';
+                        }, 50);
+                      </script>";
+                exit();
+            } else {
+                throw new \Exception("Erro ao cadastrar a placa: " . $stmt->error);
+            }
+        } else {
+            throw new \Exception("Erro ao cadastrar usuário: " . $stmt->error);
         }
-    } catch (mysqli_sql_exception $e) {
-        
+    } catch (\mysqli_sql_exception $e) {
+        $conn->rollback();
         if ($e->getCode() == 1062) {
             if (strpos($e->getMessage(), 'matricula') !== false) {
                 echo "<script>
@@ -56,6 +63,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             window.location.href = 'cadastrar.html';
                         }, 50);
                       </script>";
+            } elseif (strpos($e->getMessage(), 'placa') !== false) {
+                echo "<script>
+                        alert('Erro: A placa já está cadastrada.');
+                        setTimeout(function() {
+                            window.location.href = 'cadastrar.html';
+                        }, 50);
+                      </script>";
             }
         } else {
             echo "<script>
@@ -65,9 +79,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }, 50);
                   </script>";
         }
+    } catch (\Exception $e) {
+        $conn->rollback();
+        echo "<script>
+                alert('" . $e->getMessage() . "');
+                setTimeout(function() {
+                    window.location.href = 'cadastrar.html';
+                }, 50);
+              </script>";
     }
-
-    
-    close($conn);
+    \controle_acesso\close($conn);
 }
 ?>
