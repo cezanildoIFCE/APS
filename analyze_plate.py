@@ -53,7 +53,7 @@ def main():
         prediction = model.predict(image)
         
         # Converter a previsão em caracteres
-        characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        characters = 'ABCDEFGHIJKLMNPQRSTUVWXYZ0123456789'  # Excluir 'O'
         plate = ''.join([characters[np.argmax(pred)] for pred in prediction[0]])
         
         # Imprimir a placa para que o PHP possa capturar a saída

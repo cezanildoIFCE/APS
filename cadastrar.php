@@ -3,6 +3,8 @@ namespace controle_acesso;
 
 session_start();
 require_once 'db_connection.php';
+require_once 'Usuario.php';
+require_once 'UsuarioFactory.php';
 
 if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     echo "<script>
@@ -13,19 +15,26 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
           </script>";
     exit();
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST['nome'];
     $matricula = $_POST['matricula'];
-    $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+    $senha = $_POST['senha'];
     $placa = $_POST['placa'];
     $numero_cartao = $_POST['numero_cartao'];
     $tipo_usuario = $_POST['tipo_usuario'];
     $administrador = $_POST['administrador'];
-    $conn = \controle_acesso\connect();
+
+    $conn = connect();
     $conn->begin_transaction();
+
     try {
+        // Criar usuário usando a fábrica
+        $usuario = UsuarioFactory::criarUsuario($tipo_usuario, null, $nome, $matricula, $senha, $administrador);
+
+        // Inserir usuário no banco de dados
         $stmt = $conn->prepare("INSERT INTO usuarios (nome, matricula, senha, tipo_usuario, numero_cartao, administrador) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssi", $nome, $matricula, $senha, $tipo_usuario, $numero_cartao, $administrador);
+        $stmt->bind_param("sssssi", $usuario->getNome(), $usuario->getMatricula(), password_hash($usuario->getSenha(), PASSWORD_DEFAULT), $tipo_usuario, $numero_cartao, $administrador);
 
         if ($stmt->execute()) {
             $usuario_id = $stmt->insert_id;
@@ -88,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }, 50);
               </script>";
     }
-    \controle_acesso\close($conn);
+
+    close($conn);
 }
 ?>

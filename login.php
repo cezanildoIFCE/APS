@@ -3,43 +3,37 @@ namespace controle_acesso;
 
 session_start();
 require_once 'db_connection.php';
+require_once 'Usuario.php';
+require_once 'UsuarioFactory.php';
+require_once 'estrategias/AutenticacaoStrategy.php';
+require_once 'estrategias/AutenticacaoSenha.php';
+require_once 'Autenticador.php';
+
+use controle_acesso\estrategias\AutenticacaoSenha;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $matricula = $_POST['matricula'];
     $senha = $_POST['senha'];
 
-    $conn = connect();
+    try {
+        $autenticacao = new Autenticador(new AutenticacaoSenha());
+        $user = $autenticacao->autenticar($matricula, $senha);
 
-    $stmt = $conn->prepare("SELECT id, nome, senha, administrador FROM usuarios WHERE matricula = ?");
-    $stmt->bind_param("s", $matricula);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
+        $tipo = $user['tipo_usuario'];
+        $usuario = UsuarioFactory::criarUsuario($tipo, $user['id'], $user['nome'], $user['matricula'], $user['senha'], $user['administrador']);
+
+        $_SESSION['user_id'] = $usuario->getId();
+        $_SESSION['admin'] = $usuario->isAdministrador();
         
-        if (password_verify($senha, $user['senha'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['admin'] = $user['administrador'];
-            
-            if ($user['administrador']) {
-                header("Location: menu.html");
-            } else {
-                header("Location: menu_usuario.html");
-            }
-            exit();
+        if ($usuario->isAdministrador()) {
+            header("Location: menu.html");
         } else {
-            $message = "Senha incorreta.";
+            header("Location: menu_usuario.html");
         }
-    } else {
-        $message = "Matrícula não encontrada.";
-    }
-    
-    close($conn);
-
-    if (isset($message)) {
+        exit();
+    } catch (\Exception $e) {
         echo "<script>
-                alert('$message');
+                alert('" . $e->getMessage() . "');
                 setTimeout(function() {
                     window.location.href = 'tela_login.html';
                 }, 50);

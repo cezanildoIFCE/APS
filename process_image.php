@@ -15,6 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
         $output = shell_exec("python analyze_plate.py " . escapeshellarg($imagePath));
         $plate = trim($output);
 
+        // Mostrar a placa detectada no navegador
+        echo "Placa detectada: " . $plate . "<br>";
+
         // Enviar a placa para IA_para_esp32.php
         $ia_para_esp32 = "http://localhost/IA_para_esp32.php";
         $postData = http_build_query(array('placa' => $plate));
@@ -30,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
         $context = stream_context_create($opts);
         $response = file_get_contents($ia_para_esp32, false, $context);
 
-        echo $response;
+        // Mostrar a resposta do IA_para_esp32.php
+        echo "Resposta do servidor: " . $response;
     } else {
         echo "Erro ao enviar a imagem.";
     }
