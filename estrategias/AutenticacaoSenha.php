@@ -4,6 +4,7 @@ namespace controle_acesso\estrategias;
 require_once __DIR__ . '/../db_connection.php';
 use function controle_acesso\connect;
 
+// criar classe
 class AutenticacaoSenha implements AutenticacaoStrategy {
     public function autenticar($matricula, $senha) {
         $conn = connect();
